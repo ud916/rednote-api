@@ -8,22 +8,18 @@ CORS(app)
 
 @app.route('/')
 def home():
-    return "API is Online"
+    return "Backend is Live"
 
 @app.route('/extract')
 def extract():
     url = request.args.get('url')
     if not url:
-        return jsonify({"status": "error", "message": "No URL"})
+        return jsonify({"status": "error", "message": "No URL provided"})
 
-    # Fast Extraction Settings
     ydl_opts = {
-        'format': 'best', # Sabse jaldi link nikalne ke liye
+        'format': 'best',
         'quiet': True,
         'no_warnings': True,
-        'skip_download': True,
-        'extract_flat': False,
-        'force_generic_extractor': False
     }
     
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -32,7 +28,7 @@ def extract():
             return jsonify({
                 "status": "success",
                 "video_url": info.get('url'),
-                "title": info.get('title', 'Video')
+                "title": info.get('title', 'Rednote Video')
             })
         except Exception as e:
             return jsonify({"status": "error", "message": str(e)})
